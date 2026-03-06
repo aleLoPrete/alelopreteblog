@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+
+  <section class="hero">
+    <h1 class="hero__name">{{ section.title }}</h1>
+    <p class="hero__tagline">{{ section.extra.tagline }}</p>
+    <p class="hero__bio">{{ section.extra.bio }}</p>
+  </section>
+
+  <section class="writing-section">
+    <p class="section-label">Recent Writing</p>
+
+    {% set blog = get_section(path="posts/_index.md") %}
+    <ul class="post-list">
+      {% for page in blog.pages | slice(end=5) %}
+      <li class="post-item">
+        <time datetime="{{ page.date | date(format='%Y-%m-%d') }}">
+          {{ page.date | date(format="%Y %b") }}
+        </time>
+        <a href="{{ page.permalink }}">{{ page.title }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <a href="/posts" class="see-all">All posts &rarr;</a>
+  </section>
+
+</div>
+{% endblock %}

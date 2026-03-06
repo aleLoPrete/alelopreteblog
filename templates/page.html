@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} &ndash; {{ config.title }}{% endblock %}
+{% block description %}{% if page.description %}{{ page.description }}{% else %}{{ config.description }}{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <header class="post-header">
+    <h1 class="post-header__title">{{ page.title }}</h1>
+    <div class="post-header__meta">
+      {% if page.date %}
+      <time datetime="{{ page.date | date(format='%Y-%m-%d') }}">
+        {{ page.date | date(format="%B %d, %Y") }}
+      </time>
+      {% endif %}
+
+      {% if page.taxonomies.tags %}
+      <div class="post-header__tags">
+        {% for tag in page.taxonomies.tags %}
+        <a href="/tags/{{ tag | slugify }}" class="post-header__tag">{{ tag }}</a>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </header>
+
+  <hr class="post-divider">
+
+  <article class="post-content">
+    {{ page.content | safe }}
+  </article>
+
+  <footer class="post-footer">
+    {% if page.ancestors | length > 1 %}
+    <a href="/posts" class="back-link">&larr; Writing</a>
+    {% else %}
+    <a href="/" class="back-link">&larr; Home</a>
+    {% endif %}
+  </footer>
+
+</div>
+{% endblock %}
