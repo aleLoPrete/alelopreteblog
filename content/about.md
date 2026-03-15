@@ -9,9 +9,6 @@ I am a Threat Detection Engineer at [Sysdig Threat Research Team](https://www.sy
 
 Previously I have researched and implemented novel anomaly detection methodologies for the [European Space Agency](https://www.esa.int/).
 
-[GitHub](https://github.com/aleLoPrete/)
-
-
 ## Experiences
 
 ### Threat Detection Engineer - [Sysdig](https://sysdig.com/)
