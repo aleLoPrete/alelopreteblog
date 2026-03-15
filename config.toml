@@ -1,6 +1,6 @@
 base_url = "https://aleloprete.it"
 title = "Alessandro Lo Prete"
-description = "Threat Detection Engineer."
+description = "Threat Detection Engineer"
 default_language = "en"
 compile_sass = true
 generate_feeds = true
@@ -19,3 +19,4 @@ smart_punctuation = true
 [extra]
 author = "Alessandro Lo Prete"
 github = "https://github.com/aleLoPrete"
+linkedin = "https://linkedin.com/in/alessandroloprete"

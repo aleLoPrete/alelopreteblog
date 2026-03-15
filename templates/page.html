@@ -10,9 +10,8 @@
     <h1 class="post-header__title">{{ page.title }}</h1>
     <div class="post-header__meta">
       {% if page.date %}
-      <time datetime="{{ page.date | date(format='%Y-%m-%d') }}">
-        {{ page.date | date(format="%B %d, %Y") }}
-      </time>
+      <time datetime="{{ page.date | date(format='%Y-%m-%d') }}">{{ page.date | date(format="%B %d, %Y") }}</time>
+      {% if page.reading_time %}<span class="post-header__reading-time">· {{ page.reading_time }} min read</span>{% endif %}
       {% endif %}
 
       {% if page.taxonomies.tags %}
@@ -32,11 +31,7 @@
   </article>
 
   <footer class="post-footer">
-    {% if page.ancestors | length > 1 %}
-    <a href="/posts" class="back-link">&larr; Writing</a>
-    {% else %}
     <a href="/" class="back-link">&larr; Home</a>
-    {% endif %}
   </footer>
 
 </div>

@@ -18,9 +18,10 @@
     <ul class="post-list">
       {% for page in section.pages %}
       <li class="post-item">
-        <time datetime="{{ page.date | date(format='%Y-%m-%d') }}">
-          {{ page.date | date(format="%Y %b %d") }}
-        </time>
+        <div class="post-item__meta">
+          <time datetime="{{ page.date | date(format='%Y-%m-%d') }}">{{ page.date | date(format="%Y %m %d") }}</time>
+          {% if page.reading_time %}<span>· {{ page.reading_time }} min</span>{% endif %}
+        </div>
         <a href="{{ page.permalink }}">{{ page.title }}</a>
       </li>
       {% endfor %}
