@@ -614,6 +614,15 @@ main {
 // About
 // ============================================================
 
+.about-avatar {
+  display: block;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1.5rem;
+}
+
 .about-header {
   padding: 4rem 0 1.75rem;
   border-bottom: 1px solid var(--border);
