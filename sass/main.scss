@@ -208,10 +208,10 @@ main {
   left: 50%;
   transform: translateX(-50%);
   z-index: 100;
-  background: rgba(230, 232, 235, 0.82);
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
-  border: 1px solid rgba(207, 211, 217, 0.7);
+  background: rgba(230, 232, 235, 0.55);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(207, 211, 217, 0.5);
   border-radius: 999px;
 
   &__inner {
@@ -278,8 +278,8 @@ main {
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .site-nav {
-    background: rgba(17, 17, 17, 0.82);
-    border-color: rgba(39, 39, 39, 0.7);
+    background: rgba(17, 17, 17, 0.55);
+    border-color: rgba(39, 39, 39, 0.5);
   }
   :root:not([data-theme="light"]) .site-nav__theme-toggle {
     .icon-sun  { display: block; }
@@ -288,8 +288,8 @@ main {
 }
 
 :root[data-theme="dark"] .site-nav {
-  background: rgba(17, 17, 17, 0.82);
-  border-color: rgba(39, 39, 39, 0.7);
+  background: rgba(17, 17, 17, 0.55);
+  border-color: rgba(39, 39, 39, 0.5);
 }
 :root[data-theme="dark"] .site-nav__theme-toggle {
   .icon-sun  { display: block; }
