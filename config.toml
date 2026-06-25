@@ -18,5 +18,6 @@ smart_punctuation = true
 
 [extra]
 author = "Alessandro Lo Prete"
+subtitle = "Threat Detection Engineer · Sysdig Threat Research Team"
 github = "https://github.com/aleLoPrete"
 linkedin = "https://linkedin.com/in/alessandroloprete"

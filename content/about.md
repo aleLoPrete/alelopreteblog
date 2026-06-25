@@ -1,7 +1,6 @@
 +++
-title = "Alessandro Lo Prete"
+title = "About"
 template = "about.html"
-extra.subtitle = "Threat Detection Engineer · Sysdig Threat Research Team"
 +++
 
 I'm a Threat Detection Engineer at [Sysdig Threat Research Team](https://www.sysdig.com/threat-research), focused on Linux runtime security and cloud threat detection. I research how AI can augment threat research and detection workflows.

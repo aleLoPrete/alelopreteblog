@@ -27,8 +27,8 @@
 
   <nav class="site-nav">
     <div class="site-nav__inner">
-
       <div class="site-nav__links">
+        <span class="site-nav__indicator" aria-hidden="true"></span>
         <a href="/">Home</a>
         <a href="/about">About</a>
         <button class="theme-btn site-nav__theme-toggle" aria-label="Toggle theme">
@@ -45,6 +45,24 @@
 
   <main>
     {% block content %}{% endblock %}
+
+    <div class="container">
+      <footer class="site-identity">
+        <img src="/img/dexter-planning.gif" alt="{{ config.extra.author }}" class="site-identity__avatar">
+        <p class="site-identity__name">{{ config.title }}</p>
+        {% if config.extra.subtitle %}
+        <p class="site-identity__subtitle">{{ config.extra.subtitle }}</p>
+        {% endif %}
+        <div class="site-identity__social">
+          {% if config.extra.github %}
+          <a href="{{ config.extra.github }}" target="_blank" rel="noopener">GitHub</a>
+          {% endif %}
+          {% if config.extra.linkedin %}
+          <a href="{{ config.extra.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>
+          {% endif %}
+        </div>
+      </footer>
+    </div>
   </main>
 
   <script>
@@ -64,6 +82,35 @@
         });
       });
 
+      // --- Nav indicator ---
+      var links = Array.prototype.slice.call(document.querySelectorAll('.site-nav__links a'));
+      var indicator = document.querySelector('.site-nav__indicator');
+
+      if (indicator && links.length) {
+        function moveIndicator(el, animate) {
+          var parent = el.parentElement;
+          var pr = parent.getBoundingClientRect();
+          var er = el.getBoundingClientRect();
+          var pad = 10;
+          if (!animate) indicator.style.transition = 'none';
+          indicator.style.left = (er.left - pr.left - pad) + 'px';
+          indicator.style.width = (er.width + pad * 2) + 'px';
+          if (!animate) { indicator.getBoundingClientRect(); indicator.style.transition = ''; }
+        }
+
+        var path = window.location.pathname;
+        var active = links[0];
+        links.forEach(function (link) {
+          var href = link.getAttribute('href');
+          if (href !== '/' && path.startsWith(href)) active = link;
+        });
+        active.classList.add('active');
+        moveIndicator(active, false);
+
+        links.forEach(function (link) {
+          link.addEventListener('click', function () { moveIndicator(this, true); });
+        });
+      }
     })();
   </script>
 

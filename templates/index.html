@@ -3,14 +3,7 @@
 {% block content %}
 <div class="container">
 
-  <section class="hero">
-    <h1 class="hero__name">{{ section.title }}</h1>
-    <p class="hero__tagline">{{ section.extra.tagline }}</p>
-    <p class="hero__bio">{{ section.extra.bio }}</p>
-  </section>
-
   <section class="writing-section">
-
     {% set blog = get_section(path="posts/_index.md") %}
     <ul class="post-list">
       {% for page in blog.pages %}
