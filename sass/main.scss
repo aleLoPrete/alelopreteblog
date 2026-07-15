@@ -15,29 +15,6 @@
   --pre-text:  #EDEDED;
 }
 
-@mixin dark-theme {
-  --bg:        #000000;
-  --surface:   #0E0E0E;
-  --text:      #FFFFFF;
-  --muted:     #B4B4B4;
-  --faint:     #6E6E6E;
-  --border:    #FFFFFF;
-  --border-2:  #3A3A3A;
-  --code-bg:   #141414;
-  --pre-bg:    #0A0A0A;
-  --pre-text:  #EDEDED;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    @include dark-theme;
-  }
-}
-
-:root[data-theme="dark"] {
-  @include dark-theme;
-}
-
 // ============================================================
 // Reset
 // ============================================================
