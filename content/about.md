@@ -24,3 +24,7 @@ Previously, I built novel anomaly detection systems for the [European Space Agen
 - **Software Subsystem Lead** · [6s CubeSat, PoliSpace](https://polispace.it/6s-cubesat-project/) · Dec 2022–Apr 2024
 - **IT Consultant** · [NAM Studio](https://www.namstudio.it/) · 2021–2022
 - **VP International** · [JEToP](https://jetop.com/) · 2018–2021
+
+## Colophon
+
+Typography inspired by [The Proportional Web](https://owickstrom.github.io/the-proportional-web/) ([source](https://github.com/owickstrom/the-proportional-web), MIT licensed).

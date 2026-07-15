@@ -11,15 +11,13 @@
 
 ## Stack
 - Zola SSG, SASS, vanilla JS (no framework)
-- Fonts: Syne (headings), Inter (body), JetBrains Mono (code)
+- Fonts: Alegreya (body/serif headings), Alegreya SC (small-caps headings/nav), Courier Prime (code)
 - Syntax highlighting: base16-ocean-dark
 - Tags taxonomy with feeds
-
-## Theme System
-JS in `base.html` — reads/writes `localStorage('theme')`, applies `data-theme` on `<html>`. Light default, dark toggle.
+- Print-inspired, monochrome (ink-on-paper) typography — no dark mode, no accent color. Design credited to [The Proportional Web](https://owickstrom.github.io/the-proportional-web/) (MIT) on the About page.
 
 ## Navigation
-- Desktop: sticky top nav with inline links (Home, About) + theme toggle
+- Desktop: sticky top nav with inline links (Home, About), underline indicator on active link
 - Mobile: fixed bottom nav (iOS Safari style), respects `env(safe-area-inset-bottom)`
 - No hamburger menu — links always visible at all screen sizes
 
