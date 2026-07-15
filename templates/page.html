@@ -30,6 +30,21 @@
     {{ page.content | safe }}
   </article>
 
+  {% if page.lower or page.higher %}
+  <nav class="post-pagination">
+    <div class="post-pagination__item post-pagination__item--prev">
+      {% if page.lower %}
+      <a href="{{ page.lower.permalink }}">&larr; {{ page.lower.title }}</a>
+      {% endif %}
+    </div>
+    <div class="post-pagination__item post-pagination__item--next">
+      {% if page.higher %}
+      <a href="{{ page.higher.permalink }}">{{ page.higher.title }} &rarr;</a>
+      {% endif %}
+    </div>
+  </nav>
+  {% endif %}
+
   <footer class="post-footer">
     <a href="/" class="back-link">&larr; Home</a>
   </footer>
