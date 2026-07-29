@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title>Alessandro Lo Prete</title>
+      <link>https://aleloprete.it</link>
+      <description>Threat Detection Engineer</description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://aleloprete.it/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Mon, 10 Mar 2025 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>Building Semantica: Search for Meaning in Markdown</title>
+          <pubDate>Mon, 10 Mar 2025 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://aleloprete.it/posts/building-semantica/</link>
+          <guid>https://aleloprete.it/posts/building-semantica/</guid>
+          <description xml:base="https://aleloprete.it/posts/building-semantica/">&lt;p&gt;I’ve recently come across the idea of &lt;strong&gt;Retrieval-Augmented Generation (RAG)&lt;&#x2F;strong&gt; and wanted to experiment with it. Since I had a backlog item to set up a local LLM for my notes and documents, I wanted to start implementing the &lt;strong&gt;retrieval process&lt;&#x2F;strong&gt; to improve the responses of the model I will use.&lt;&#x2F;p&gt;
+&lt;p&gt;It was a fun project to build and requires just a few building blocks. I’m also excited about it because there’s a lot of improvement to be made and therefore so much to learn.&lt;&#x2F;p&gt;
+&lt;p&gt;This is how I assembled &lt;strong&gt;Semantica&lt;&#x2F;strong&gt;, a &lt;strong&gt;local, FAISS-based search engine&lt;&#x2F;strong&gt; for my markdown notes. It’s still not very fast or efficient but it works great and, most importantly, it is fully local.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;what-is-semantic-search&quot;&gt;What Is Semantic Search&lt;&#x2F;h2&gt;
+&lt;p&gt;Most search engines utilize keyword-matching at the core of their algorithm. Semantic search is a formal (mathematical) way of representing &lt;strong&gt;meaning&lt;&#x2F;strong&gt;. Instead of matching exact words, it looks at &lt;strong&gt;context and intent&lt;&#x2F;strong&gt; to find the most relevant results. It does this by converting text into &lt;strong&gt;vectors&lt;&#x2F;strong&gt; and finding similarities between them. This means you can search with natural language and get results that make sense, even if they don’t contain the exact words you typed.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This is a very simplistic look at semantics, from the perspective of a software engineer. Semantics is part of the vast and fascinating field of linguistics.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;why-semantic-search&quot;&gt;Why Semantic Search&lt;&#x2F;h2&gt;
+&lt;p&gt;I’ve used Obsidian for the last three years as my primary knowledge base&lt;sup class=&quot;footnote-reference&quot;&gt;&lt;a href=&quot;#1&quot;&gt;1&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt;. This means I have thousands of notes spanning university classes, random ideas, and book notes.&lt;&#x2F;p&gt;
+&lt;p&gt;The built-in fuzzy search of Obsidian is perfect for day-to-day productivity, and well-named notes are the building block of my collection.&lt;&#x2F;p&gt;
+&lt;p&gt;Some notes, though, don’t get reviewed for a long time, or were created and never opened again. I loved the idea of carrying out a semantic search for two main reasons:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Finding something old, of which I forgot the title or even the existence&lt;&#x2F;li&gt;
+&lt;li&gt;Analysis of semantic relationships between notes — Obsidian lets you see links you created between notes, but I’d love automatic semantic linking. For personal notes this is not that useful, but for bigger databases with multiple authors, it could be extremely valuable for navigating the knowledge base.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;tech-stack-architecture&quot;&gt;Tech Stack &amp;amp; Architecture&lt;&#x2F;h2&gt;
+&lt;p&gt;The pipeline is simple:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Convert text and PDF into a vector representation&lt;&#x2F;strong&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Build the index over the vector database&lt;&#x2F;strong&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Perform similarity search over the index&lt;&#x2F;strong&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;Tools used:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;FAISS&lt;&#x2F;strong&gt; — Facebook’s vector search library for similarity search&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;SentenceTransformers&lt;&#x2F;strong&gt; — To generate the vectorized database&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Rich &amp;amp; Typer&lt;&#x2F;strong&gt; — For a cleaner CLI&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;indexing-pipeline&quot;&gt;Indexing Pipeline&lt;&#x2F;h3&gt;
+&lt;ol&gt;
+&lt;li&gt;Read all &lt;strong&gt;Markdown &amp;amp; PDF&lt;&#x2F;strong&gt; files from a folder&lt;&#x2F;li&gt;
+&lt;li&gt;Extract text (and optionally YAML metadata) — since &lt;a href=&quot;https:&#x2F;&#x2F;obsidian.md&quot;&gt;Obsidian&lt;&#x2F;a&gt; uses YAML frontmatter&lt;&#x2F;li&gt;
+&lt;li&gt;Convert text to &lt;strong&gt;embeddings&lt;&#x2F;strong&gt; using SentenceTransformers from Hugging Face&lt;&#x2F;li&gt;
+&lt;li&gt;Store embeddings in &lt;strong&gt;FAISS&lt;&#x2F;strong&gt; for efficient nearest-neighbor search&lt;&#x2F;li&gt;
+&lt;li&gt;Save metadata (filenames, tags) for easy lookup&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h3 id=&quot;search-pipeline&quot;&gt;Search Pipeline&lt;&#x2F;h3&gt;
+&lt;ol&gt;
+&lt;li&gt;Load the &lt;strong&gt;FAISS index&lt;&#x2F;strong&gt; and metadata&lt;&#x2F;li&gt;
+&lt;li&gt;Embed the &lt;strong&gt;search query&lt;&#x2F;strong&gt; into the same vector space&lt;&#x2F;li&gt;
+&lt;li&gt;Perform a &lt;strong&gt;nearest-neighbor search&lt;&#x2F;strong&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Return the &lt;strong&gt;top-K most similar notes&lt;&#x2F;strong&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h3 id=&quot;cli&quot;&gt;CLI&lt;&#x2F;h3&gt;
+&lt;p&gt;I built a simple CLI with Python’s &lt;code&gt;Rich&lt;&#x2F;code&gt; and &lt;code&gt;Typer&lt;&#x2F;code&gt;. They look good but are a bit heavy — although definitely not the performance bottleneck.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;next-steps&quot;&gt;Next Steps&lt;&#x2F;h2&gt;
+&lt;p&gt;This was just the &lt;strong&gt;first step&lt;&#x2F;strong&gt; — the end goal is a &lt;strong&gt;personalized GPT&lt;&#x2F;strong&gt; to explore my own thoughts without relying on third-party cloud services.&lt;&#x2F;p&gt;
+&lt;p&gt;Next steps:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Semantic analysis &#x2F; semantic notes graph&lt;&#x2F;strong&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Make it a plugin for Obsidian&lt;&#x2F;strong&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Add local GPT&lt;&#x2F;strong&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;1&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;1&lt;&#x2F;sup&gt;
+&lt;p&gt;I don’t love the term “second brain,” but since it’s well understood in productivity communities, I use it here for clarity.&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+</description>
+      </item>
+      <item>
+          <title>How I Take My Notes</title>
+          <pubDate>Sun, 09 Mar 2025 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://aleloprete.it/posts/how-i-take-my-notes/</link>
+          <guid>https://aleloprete.it/posts/how-i-take-my-notes/</guid>
+          <description xml:base="https://aleloprete.it/posts/how-i-take-my-notes/">&lt;p&gt;As an engineering student, I’ve spent the last six years refining how I take notes. I’ve tested countless systems, fallen into productivity rabbit holes, and ultimately landed on a simple, effective philosophy.&lt;&#x2F;p&gt;
+&lt;p&gt;In this post, I’ll go through the principles I apply when taking notes.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;writing-for-understanding&quot;&gt;Writing for Understanding&lt;&#x2F;h3&gt;
+&lt;p&gt;Writing is one of the best ways to solidify understanding. As Prof. Feynman teaches, explaining something in your own words forces you to think more deeply and identify gaps in your knowledge. In my notes, I try to do this as if I were talking to my future self.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;content-before-structure&quot;&gt;Content Before Structure&lt;&#x2F;h3&gt;
+&lt;p&gt;Rather than over-planning, I let the structure emerge naturally as I accumulate notes. My focus is on capturing the &lt;strong&gt;anarchy of ideas&lt;&#x2F;strong&gt; first and then refining the structure as it emerges from the flow. Messy but content-rich notes are far more valuable than neatly-structured but empty ones.&lt;&#x2F;p&gt;
+&lt;p&gt;For example, when taking notes at the beginning of a university course, I rarely build an outline that follows the syllabus — I take notes in only one file, to be reorganized during later classes.&lt;&#x2F;p&gt;
+&lt;p&gt;I think it is difficult to have an effective overview when first encountering a broad topic, and trying to impose one would be counterproductive. Over time, patterns and categories develop organically, shaping an intuitive structure. Rewriting raw notes into ordered ones is also an excellent way of consolidating knowledge.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;an-excursus-on-hypertext&quot;&gt;An Excursus on Hypertext&lt;&#x2F;h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Wikipedia: “&lt;strong&gt;Hypertext&lt;&#x2F;strong&gt; is text displayed on a computer display or other electronic devices with references (hyperlinks) to other text that the reader can immediately access.”&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;I argue that hypertext was the &lt;strong&gt;last real revolution&lt;&#x2F;strong&gt; (before GPTs) in how we organize and explore written content. Unlike traditional linear structures, it allows seamless referencing and navigation between texts. This is a fundamental shift from physical texts because it enables a more organic way of exploring knowledge — you follow connections between concepts rather than being confined to a rigid, pre-imposed structure. This is especially useful when learning something new, as it lets you build understanding in a way that reflects how ideas naturally connect in your mind.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;atomic-ideas-map-of-concepts&quot;&gt;Atomic Ideas &amp;amp; Map of Concepts&lt;&#x2F;h3&gt;
+&lt;p&gt;As a reflection of the hypertext paradigm, once the flow of ideas has been captured, I try to organize the content following two basic categories: &lt;strong&gt;Atomic Ideas&lt;&#x2F;strong&gt; and &lt;strong&gt;Map of Concepts&lt;&#x2F;strong&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;Atomic ideas are self-contained ideas, while maps of concepts are structured lists of atomic notes or other maps of concepts. This means trying to organize your notes as if you were building your own Wikipedia.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;&amp;lt;MAP-OF-CONCEPTS&amp;gt; -&amp;gt; (&amp;lt;ATOMIC-IDEA&amp;gt; | &amp;lt;MAP-OF-CONCEPTS&amp;gt;)+
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;For example, the starting note of a university course is usually a map of concepts, containing the individual concepts seen during classes, and sub-topics as maps of concepts.&lt;&#x2F;p&gt;
+&lt;p&gt;Breaking complex ideas into small, self-contained pieces makes them easier to reference and integrate with other notes. Organizing concepts as an outline builds the structured understanding needed for classes.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;evergreen-notes&quot;&gt;Evergreen Notes&lt;&#x2F;h3&gt;
+&lt;p&gt;From this way of taking notes emerges the concept of &lt;strong&gt;Evergreen Notes&lt;&#x2F;strong&gt;&lt;sup class=&quot;footnote-reference&quot;&gt;&lt;a href=&quot;#1&quot;&gt;1&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt;. Once ideas have been captured and organized in a way that makes them easy to reference, there’s no need to create a new note every time a familiar concept appears in a new context. Instead, summoning the power of hypertext, I simply link back to the existing note.&lt;&#x2F;p&gt;
+&lt;p&gt;When gaining new insights on a concept, I update the original note directly rather than scattering related thoughts across multiple ones. This creates a central, evolving hub of knowledge that grows across projects and subjects. It mirrors the way we actually understand things — refining, expanding, and deepening concepts as we encounter them in different contexts.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;&#x2F;h2&gt;
+&lt;p&gt;To do this, I’ve been using &lt;a href=&quot;https:&#x2F;&#x2F;obsidian.md&quot;&gt;Obsidian&lt;&#x2F;a&gt; for the last three years because it aligns well with these principles. But the truth is, you don’t need any fancy software. Even plain text files can be enough to build a system that works for you. What matters most is not the tool but the mindset: focusing on understanding, letting structure emerge naturally, and making knowledge truly your own.&lt;&#x2F;p&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;1&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;1&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;notes.andymatuschak.org&#x2F;Evergreen_notes&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+</description>
+      </item>
+    </channel>
+</rss>

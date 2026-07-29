@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Building Semantica: Search for Meaning in Markdown &ndash; Alessandro Lo Prete</title>
+  <meta name="description" content="Threat Detection Engineer">
+  <meta name="author" content="Alessandro Lo Prete">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,700;1,400;1,700&family=Alegreya+SC:wght@500;700&family=Courier+Prime&display=swap" rel="stylesheet">
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-title" content="Alessandro Lo Prete">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="format-detection" content="telephone=no, date=no, address=no">
+  <link rel="stylesheet" href="https://aleloprete.it/main.css">
+  <link rel="alternate" type="application/rss+xml" title="Alessandro Lo Prete" href="https://aleloprete.it/rss.xml">
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="site-nav__inner">
+      <div class="site-nav__links">
+        <span class="site-nav__indicator" aria-hidden="true"></span>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    
+<div class="container">
+
+  <header class="post-header">
+    <h1 class="post-header__title">Building Semantica: Search for Meaning in Markdown</h1>
+    <div class="post-header__meta">
+      
+      <time datetime="2025-03-10">March 10, 2025</time>
+      <span class="post-header__reading-time">· 4 min read</span>
+      
+
+      
+    </div>
+  </header>
+
+  <hr class="post-divider">
+
+  <article class="post-content">
+    <p>I’ve recently come across the idea of <strong>Retrieval-Augmented Generation (RAG)</strong> and wanted to experiment with it. Since I had a backlog item to set up a local LLM for my notes and documents, I wanted to start implementing the <strong>retrieval process</strong> to improve the responses of the model I will use.</p>
+<p>It was a fun project to build and requires just a few building blocks. I’m also excited about it because there’s a lot of improvement to be made and therefore so much to learn.</p>
+<p>This is how I assembled <strong>Semantica</strong>, a <strong>local, FAISS-based search engine</strong> for my markdown notes. It’s still not very fast or efficient but it works great and, most importantly, it is fully local.</p>
+<h2 id="what-is-semantic-search">What Is Semantic Search</h2>
+<p>Most search engines utilize keyword-matching at the core of their algorithm. Semantic search is a formal (mathematical) way of representing <strong>meaning</strong>. Instead of matching exact words, it looks at <strong>context and intent</strong> to find the most relevant results. It does this by converting text into <strong>vectors</strong> and finding similarities between them. This means you can search with natural language and get results that make sense, even if they don’t contain the exact words you typed.</p>
+<blockquote>
+<p>This is a very simplistic look at semantics, from the perspective of a software engineer. Semantics is part of the vast and fascinating field of linguistics.</p>
+</blockquote>
+<h2 id="why-semantic-search">Why Semantic Search</h2>
+<p>I’ve used Obsidian for the last three years as my primary knowledge base<sup class="footnote-reference"><a href="#1">1</a></sup>. This means I have thousands of notes spanning university classes, random ideas, and book notes.</p>
+<p>The built-in fuzzy search of Obsidian is perfect for day-to-day productivity, and well-named notes are the building block of my collection.</p>
+<p>Some notes, though, don’t get reviewed for a long time, or were created and never opened again. I loved the idea of carrying out a semantic search for two main reasons:</p>
+<ul>
+<li>Finding something old, of which I forgot the title or even the existence</li>
+<li>Analysis of semantic relationships between notes — Obsidian lets you see links you created between notes, but I’d love automatic semantic linking. For personal notes this is not that useful, but for bigger databases with multiple authors, it could be extremely valuable for navigating the knowledge base.</li>
+</ul>
+<h2 id="tech-stack-architecture">Tech Stack &amp; Architecture</h2>
+<p>The pipeline is simple:</p>
+<ol>
+<li><strong>Convert text and PDF into a vector representation</strong></li>
+<li><strong>Build the index over the vector database</strong></li>
+<li><strong>Perform similarity search over the index</strong></li>
+</ol>
+<p>Tools used:</p>
+<ul>
+<li><strong>FAISS</strong> — Facebook’s vector search library for similarity search</li>
+<li><strong>SentenceTransformers</strong> — To generate the vectorized database</li>
+<li><strong>Rich &amp; Typer</strong> — For a cleaner CLI</li>
+</ul>
+<h3 id="indexing-pipeline">Indexing Pipeline</h3>
+<ol>
+<li>Read all <strong>Markdown &amp; PDF</strong> files from a folder</li>
+<li>Extract text (and optionally YAML metadata) — since <a href="https://obsidian.md">Obsidian</a> uses YAML frontmatter</li>
+<li>Convert text to <strong>embeddings</strong> using SentenceTransformers from Hugging Face</li>
+<li>Store embeddings in <strong>FAISS</strong> for efficient nearest-neighbor search</li>
+<li>Save metadata (filenames, tags) for easy lookup</li>
+</ol>
+<h3 id="search-pipeline">Search Pipeline</h3>
+<ol>
+<li>Load the <strong>FAISS index</strong> and metadata</li>
+<li>Embed the <strong>search query</strong> into the same vector space</li>
+<li>Perform a <strong>nearest-neighbor search</strong></li>
+<li>Return the <strong>top-K most similar notes</strong></li>
+</ol>
+<h3 id="cli">CLI</h3>
+<p>I built a simple CLI with Python’s <code>Rich</code> and <code>Typer</code>. They look good but are a bit heavy — although definitely not the performance bottleneck.</p>
+<h2 id="next-steps">Next Steps</h2>
+<p>This was just the <strong>first step</strong> — the end goal is a <strong>personalized GPT</strong> to explore my own thoughts without relying on third-party cloud services.</p>
+<p>Next steps:</p>
+<ul>
+<li><strong>Semantic analysis / semantic notes graph</strong></li>
+<li><strong>Make it a plugin for Obsidian</strong></li>
+<li><strong>Add local GPT</strong></li>
+</ul>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>I don’t love the term “second brain,” but since it’s well understood in productivity communities, I use it here for clarity.</p>
+</div>
+
+  </article>
+
+  
+  <nav class="post-pagination">
+    <div class="post-pagination__item post-pagination__item--prev">
+      
+    </div>
+    <div class="post-pagination__item post-pagination__item--next">
+      
+      <a href="https:&#x2F;&#x2F;aleloprete.it&#x2F;posts&#x2F;how-i-take-my-notes&#x2F;">How I Take My Notes &rarr;</a>
+      
+    </div>
+  </nav>
+  
+
+  <footer class="post-footer">
+    <a href="/" class="back-link">&larr; Home</a>
+  </footer>
+
+</div>
+
+
+    <div class="container">
+      <footer class="site-identity">
+        <img src="/img/dexter-planning.gif" alt="Alessandro Lo Prete" class="site-identity__avatar">
+        <p class="site-identity__name">Alessandro Lo Prete</p>
+        
+        <p class="site-identity__subtitle">Threat Detection Engineer · Sysdig Threat Research Team</p>
+        
+        <div class="site-identity__social">
+          
+          <a href="https:&#x2F;&#x2F;github.com&#x2F;aleLoPrete" target="_blank" rel="noopener">GitHub</a>
+          
+          
+          <a href="https:&#x2F;&#x2F;linkedin.com&#x2F;in&#x2F;alessandroloprete" target="_blank" rel="noopener">LinkedIn</a>
+          
+        </div>
+      </footer>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      // --- Nav indicator ---
+      var links = Array.prototype.slice.call(document.querySelectorAll('.site-nav__links a'));
+      var indicator = document.querySelector('.site-nav__indicator');
+
+      if (indicator && links.length) {
+        function moveIndicator(el, animate) {
+          var parent = el.parentElement;
+          var pr = parent.getBoundingClientRect();
+          var er = el.getBoundingClientRect();
+          var pad = 1;
+          if (!animate) indicator.style.transition = 'none';
+          indicator.style.left = (er.left - pr.left - pad) + 'px';
+          indicator.style.width = (er.width + pad * 2) + 'px';
+          if (!animate) { indicator.getBoundingClientRect(); indicator.style.transition = ''; }
+        }
+
+        var path = window.location.pathname;
+        var active = links[0];
+        links.forEach(function (link) {
+          var href = link.getAttribute('href');
+          if (href !== '/' && path.startsWith(href)) active = link;
+        });
+        active.classList.add('active');
+        moveIndicator(active, false);
+
+        links.forEach(function (link) {
+          link.addEventListener('click', function () { moveIndicator(this, true); });
+        });
+      }
+    })();
+  </script>
+
+</body>
+</html>

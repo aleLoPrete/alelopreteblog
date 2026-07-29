@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About &ndash; Alessandro Lo Prete</title>
+  <meta name="description" content="Threat Detection Engineer">
+  <meta name="author" content="Alessandro Lo Prete">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,700;1,400;1,700&family=Alegreya+SC:wght@500;700&family=Courier+Prime&display=swap" rel="stylesheet">
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-title" content="Alessandro Lo Prete">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="format-detection" content="telephone=no, date=no, address=no">
+  <link rel="stylesheet" href="https://aleloprete.it/main.css">
+  <link rel="alternate" type="application/rss+xml" title="Alessandro Lo Prete" href="https://aleloprete.it/rss.xml">
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="site-nav__inner">
+      <div class="site-nav__links">
+        <span class="site-nav__indicator" aria-hidden="true"></span>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    
+<div class="container">
+  <header class="section-header">
+    <h1>About</h1>
+  </header>
+  <hr class="post-divider">
+  <article class="about-content">
+    <p>I’m a Threat Detection Engineer at <a href="https://www.sysdig.com/threat-research">Sysdig Threat Research Team</a>, focusing on Linux and cloud security. I research agentic threats and AI-driven threat detection.</p>
+<p>Previously, I have researched anomaly detection systems for the <a href="https://www.esa.int/">European Space Agency</a>.</p>
+<h2 id="writing">Writing</h2>
+<ul>
+<li><a href="https://www.sysdig.com/blog/ai-coding-agents-are-running-on-your-machines-do-you-know-what-theyre-doing">AI coding agents are running on your machines — Do you know what they’re doing?</a> · Sysdig Blog</li>
+<li><a href="https://www.sysdig.com/blog/how-threat-actors-are-using-self-hosted-github-actions-runners-as-backdoors">How Threat Actors Are Using Self-Hosted GitHub Actions Runners as Backdoors</a> · Sysdig Blog</li>
+<li><a href="https://www.polimi.it">Time Series Anomaly Detection on Lunar Delay Tolerant Networks</a> · MSc Thesis, Politecnico di Milano</li>
+</ul>
+<h2 id="projects-and-contributions">Projects and Contributions</h2>
+<ul>
+<li><a href="https://github.com/HEAPLab/ASPIS">ASPIS</a> · Out-of-tree LLVM plugin to harden embedded systems against Single-Event Upsets (SEUs). Added Docker support for installation and testing; expanded test coverage.</li>
+<li><a href="https://polispace.it/6s-cubesat-project/">6s CubeSat</a> · Team Lead for the Software Subsystem. Designed and tested flight software for the Nanomind A3200 OBC, including mission mode manager and AOCS module integration.</li>
+</ul>
+<h2 id="experience">Experience</h2>
+<ul>
+<li><strong>Threat Detection Engineer</strong> · <a href="https://sysdig.com/">Sysdig</a> · Nov 2025–present</li>
+<li><strong>Research Intern</strong> · <a href="https://www.esa.int/">ESA</a> / <a href="https://www.esa.int/Enabling_Support/Operations/Ground_Systems_Engineering/Advanced_Ground_Software_Applications_Laboratory">AGSA Lab</a> · Mar 2024–Sep 2025</li>
+<li><strong>Team Leader Software</strong> · <a href="https://polispace.it/6s-cubesat-project/">6s CubeSat, PoliSpace</a> · Dec 2022–Apr 2024</li>
+<li><strong>IT Consultant</strong> · <a href="https://www.namstudio.it/">NAM Studio</a> · 2021–2022</li>
+<li><strong>Vice President (International Manager) · Software Engineer</strong> · <a href="https://jetop.com/">JEToP</a> · 2018–2021</li>
+</ul>
+<h2 id="colophon">Colophon</h2>
+<p>Typography inspired by <a href="https://owickstrom.github.io/the-proportional-web/">The Proportional Web</a> (<a href="https://github.com/owickstrom/the-proportional-web">source</a>, MIT licensed).</p>
+
+  </article>
+</div>
+
+
+    <div class="container">
+      <footer class="site-identity">
+        <img src="/img/dexter-planning.gif" alt="Alessandro Lo Prete" class="site-identity__avatar">
+        <p class="site-identity__name">Alessandro Lo Prete</p>
+        
+        <p class="site-identity__subtitle">Threat Detection Engineer · Sysdig Threat Research Team</p>
+        
+        <div class="site-identity__social">
+          
+          <a href="https:&#x2F;&#x2F;github.com&#x2F;aleLoPrete" target="_blank" rel="noopener">GitHub</a>
+          
+          
+          <a href="https:&#x2F;&#x2F;linkedin.com&#x2F;in&#x2F;alessandroloprete" target="_blank" rel="noopener">LinkedIn</a>
+          
+        </div>
+      </footer>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      // --- Nav indicator ---
+      var links = Array.prototype.slice.call(document.querySelectorAll('.site-nav__links a'));
+      var indicator = document.querySelector('.site-nav__indicator');
+
+      if (indicator && links.length) {
+        function moveIndicator(el, animate) {
+          var parent = el.parentElement;
+          var pr = parent.getBoundingClientRect();
+          var er = el.getBoundingClientRect();
+          var pad = 1;
+          if (!animate) indicator.style.transition = 'none';
+          indicator.style.left = (er.left - pr.left - pad) + 'px';
+          indicator.style.width = (er.width + pad * 2) + 'px';
+          if (!animate) { indicator.getBoundingClientRect(); indicator.style.transition = ''; }
+        }
+
+        var path = window.location.pathname;
+        var active = links[0];
+        links.forEach(function (link) {
+          var href = link.getAttribute('href');
+          if (href !== '/' && path.startsWith(href)) active = link;
+        });
+        active.classList.add('active');
+        moveIndicator(active, false);
+
+        links.forEach(function (link) {
+          link.addEventListener('click', function () { moveIndicator(this, true); });
+        });
+      }
+    })();
+  </script>
+
+</body>
+</html>
