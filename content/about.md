@@ -9,7 +9,7 @@ Previously, I have researched anomaly detection systems for the [European Space 
 
 ## Writing
 
-- [AI coding agents are running on your machines — Do you know what they're doing?](https://www.sysdig.com/blog/ai-coding-agents-are-running-on-your-machines-do-you-know-what-theyre-doing)
+- [AI coding agents are running on your machines — Do you know what they're doing?](https://www.sysdig.com/blog/ai-coding-agents-are-running-on-your-machines-do-you-know-what-theyre-doing) · Sysdig Blog
 - [How Threat Actors Are Using Self-Hosted GitHub Actions Runners as Backdoors](https://www.sysdig.com/blog/how-threat-actors-are-using-self-hosted-github-actions-runners-as-backdoors) · Sysdig Blog
 - [Time Series Anomaly Detection on Lunar Delay Tolerant Networks](https://www.polimi.it) · MSc Thesis, Politecnico di Milano
 
