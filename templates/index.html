@@ -2,21 +2,64 @@
 
 {% block content %}
 <div class="container">
+  <header class="site-identity">
+    <img src="/img/dexter-planning.gif" alt="{{ config.extra.author }}" class="site-identity__avatar">
+    <p class="site-identity__name">{{ config.title }}</p>
+    {% if config.extra.subtitle %}
+    <p class="site-identity__subtitle">{{ config.extra.subtitle }}</p>
+    {% endif %}
+    <div class="site-identity__social">
+      {% if config.extra.github %}
+      <a href="{{ config.extra.github }}" target="_blank" rel="noopener">GitHub</a>
+      {% endif %}
+      {% if config.extra.linkedin %}
+      <a href="{{ config.extra.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>
+      {% endif %}
+    </div>
+  </header>
 
-  <section class="writing-section">
+  <hr class="post-divider">
+
+  <article class="about-content">
+    {{ section.content | safe }}
+
+    <h2>Writing</h2>
+
+    <p>Here's a list of my writing — I try to keep it updated on a best-effort basis. These days I mostly write on <a href="{{ config.extra.linkedin }}" target="_blank" rel="noopener">LinkedIn</a> and the <a href="https://www.sysdig.com/blog" target="_blank" rel="noopener">Sysdig Blog</a>. I post here sporadically — expect writing that's less technical and more philosophical.</p>
+
+    {% set_global writing_items = [] %}
     {% set blog = get_section(path="posts/_index.md") %}
-    <ul class="post-list">
-      {% for page in blog.pages %}
-      <li class="post-item">
-        <div class="post-item__meta">
-          <time datetime="{{ page.date | date(format='%Y-%m-%d') }}">{{ page.date | date(format="%Y %m %d") }}</time>
-          {% if page.reading_time %}<span>· {{ page.reading_time }} min</span>{% endif %}
-        </div>
-        <a href="{{ page.permalink }}">{{ page.title }}</a>
-      </li>
+    {% for page in blog.pages %}
+      {% set sort_key = page.date | date(format="%Y-%m-%d") %}
+      {% set date_label = page.date | date(format="%Y %m %d") %}
+      {% set li = "<li><strong>Personal Blog</strong> · " ~ date_label ~ " · " ~ page.reading_time ~ " min — <a href='" ~ page.permalink ~ "'>" ~ page.title ~ "</a></li>" %}
+      {% set_global writing_items = writing_items | concat(with=["<!--" ~ sort_key ~ "-->" ~ li]) %}
+    {% endfor %}
+    {% for item in section.extra.current_writing %}
+      {% set li = "<li><strong>" ~ item.source ~ "</strong> · " ~ item.date_display ~ " — <a href='" ~ item.url ~ "' target='_blank' rel='noopener'>" ~ item.title ~ "</a></li>" %}
+      {% set_global writing_items = writing_items | concat(with=["<!--" ~ item.date ~ "-->" ~ li]) %}
+    {% endfor %}
+    <ul>
+      {% for entry in writing_items | sort | reverse %}
+      {{ entry | safe }}
       {% endfor %}
     </ul>
-  </section>
 
+    <h2>Projects and Contributions</h2>
+    <ul>
+      {% for project in section.extra.projects %}
+      <li><a href="{{ project.url }}" target="_blank" rel="noopener">{{ project.title }}</a> · {{ project.description }}</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Experience</h2>
+    <ul>
+      {% for job in section.extra.experience %}
+      <li><strong>{{ job.role }}</strong> · <a href="{{ job.org_url }}" target="_blank" rel="noopener">{{ job.org }}</a> · {{ job.period }}</li>
+      {% endfor %}
+    </ul>
+
+    <p>{{ section.extra.colophon | markdown(inline=true) | safe }}</p>
+  </article>
 </div>
 {% endblock %}
